@@ -23,7 +23,7 @@ class Libro:
         except Exception as e:
             raise
 
-    # Devuelve algunos datos del libro encontrado o sino hay muestra un mensaje
+    # Método cuando se hace clic en Buscar
     def buscarPorNombre(self):
         nombreIngresado = inputNombre.get()
         if nombreIngresado == '':
@@ -32,7 +32,6 @@ class Libro:
         else: 
             sql = "SELECT nombre, autor, cantidad, Disponible, tipoPrestamo, diasPrestamo FROM libros WHERE nombre = '{}'".format(nombreIngresado)
             try:
-                global specificData
                 self.cursor.execute(sql)
                 specificData = self.cursor.fetchall()
                 if specificData == ():
