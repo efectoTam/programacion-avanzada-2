@@ -12,6 +12,7 @@ class Libro:
         )
         self.cursor = self.connection.cursor()
 
+    # Devuelve todos los libros
     def selectLibros(self):
         sql = "SELECT * from libros"
         try:
@@ -21,6 +22,41 @@ class Libro:
         
         except Exception as e:
             raise
+
+    # Devuelve algunos datos del libro encontrado o sino hay muestra un mensaje
+    def buscarPorNombre(self):
+        nombreIngresado = inputNombre.get()
+        if nombreIngresado == '':
+            inputVacio = Label(tab2, text="Escribe el nombre de un libro antes de buscar")
+            inputVacio.pack(anchor="w")
+        else: 
+            sql = "SELECT nombre, autor, cantidad, Disponible, tipoPrestamo, diasPrestamo FROM libros WHERE nombre = '{}'".format(nombreIngresado)
+            try:
+                global specificData
+                self.cursor.execute(sql)
+                specificData = self.cursor.fetchall()
+                if specificData == ():
+                    sinResultados = Label(tab2, text="\nNo hay resultados para: " + nombreIngresado)
+                    sinResultados.pack(anchor="w")
+                else:
+                    for row in specificData:
+                        subtitleResultado = Label(tab2, text="\n\nResultado de la búsqueda")
+                        subtitleResultado.pack(anchor="w")
+                        specificNombre = Label(tab2, text="Nombre: " + row[0])
+                        specificAutor = Label(tab2, text="Autor: " + row[1])
+                        specificCantidad = Label(tab2, text="Cantidad: " + str(row[2]))
+                        specificDisponibilidad = Label(tab2, text="Disponible: " + row[3])
+                        specificTipoPrestamo = Label(tab2, text="Tipo de préstamo: " + row[4])
+                        specificDiasPrestamo = Label(tab2, text="Días de préstamo: " + str(row[5]) + "\n")
+                        specificNombre.pack(anchor="w")
+                        specificAutor.pack(anchor="w")
+                        specificCantidad.pack(anchor="w")
+                        specificDisponibilidad.pack(anchor="w")
+                        specificTipoPrestamo.pack(anchor="w")
+                        specificDiasPrestamo.pack(anchor="w")
+            
+            except Exception as e:
+                raise
 
 libro1 = Libro()
 libro1.selectLibros()
@@ -51,7 +87,7 @@ tabOne = Frame(canvas1)
 canvas1.create_window(650, 740, window=tabOne)
 
 # Contenido pestaña 1
-titulo = Label(tabOne, text=" \n Estos son todos los libros que tenemos en la biblioteca \n \n")
+titulo = Label(tabOne, text=" \nEstos son todos los libros que tenemos en la biblioteca \n \n")
 titulo.pack(anchor="w")
 
 for row in results:
@@ -74,13 +110,18 @@ for row in results:
     tipoPrestamo.pack(anchor="w")
     diasPrestamo.pack(anchor="w")
 
-
 # Contenido pestaña 2
-titulo = Label(tab2, text="Escribe el nombre del libro")
-titulo.place(x=10, y=10)
+titulo2 = Label(tab2, text="\nEscribe el nombre del libro \n")
+titulo2.pack(anchor="w")
+inputNombre= Entry(tab2, width = "60", highlightthickness=1)
+inputNombre.config(highlightbackground = "#000000", highlightcolor = "#000000")
+inputNombre.pack(anchor="w")
+
+botonResultado = Button(tab2, text="Buscar", command=libro1.buscarPorNombre, width="40")
+botonResultado.pack(anchor="w")
 
 # Contenido pestaña 3
-titulo = Label(tab3, text="Ingresa los datos del libro que quieres donar")
-titulo.place(x=10, y=10)
+titulo3 = Label(tab3, text="Ingresa los datos del libro que quieres donar")
+titulo3.place(x=10, y=10)
 
 ventanaBiblioteca.mainloop()
