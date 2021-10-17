@@ -70,7 +70,6 @@ class Libro:
             textoDonacion['text'] = mensaje
         else:
             sql = "INSERT INTO donaciones(nombreLibro, autor, añoPublicacion, nombreColaborador) values ('{}', '{}', '{}', '{}')".format(dato1, dato2, dato3, dato4)
-            
             try:
                 self.cursor.execute(sql)
                 self.connection.commit()
