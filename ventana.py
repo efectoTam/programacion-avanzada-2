@@ -3,9 +3,7 @@ from tkinter import ttk
 import pymysql
 
 class Libro:
-    def __init__(self, nombre, autor):
-        self.nombre=nombre
-        self.autor=autor
+    def __init__(self):
         self.connection = pymysql.connect(
             host='localhost',
             user='root',
@@ -24,10 +22,10 @@ class Libro:
         except Exception as e:
             raise
 
-libro1 = Libro("It", "Stephen King")
+libro1 = Libro()
 libro1.selectLibros()
 
- # Ventana
+# Ventana
 ventanaBiblioteca = Tk()
 ventanaBiblioteca.title("Biblioteca Temuco")
 w, h = ventanaBiblioteca.winfo_screenwidth(), ventanaBiblioteca.winfo_screenheight()
